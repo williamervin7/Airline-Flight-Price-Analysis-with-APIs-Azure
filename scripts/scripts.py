@@ -1,6 +1,38 @@
 import requests
 import pandas as pd
 
+# 1. Get access token
+def get_access_token(api_key, api_secret):
+    """
+    Request an OAuth2 access token from the Amadeus API.
+
+    The access token is required for authenticating subsequent API calls 
+    (e.g., flight search). Tokens are short-lived and typically expire 
+    within 30 minutes, so this function should be called whenever a 
+    new token is needed.
+
+    Args:
+        api_key (str): Your permanent Amadeus API key (client_id).
+        api_secret (str): Your permanent Amadeus API secret (client_secret).
+
+    Returns:
+        str: A short-lived bearer access token for authenticating API requests.
+
+    Example:
+        >>> token = get_access_token(API_KEY, API_SECRET)
+        >>> print(token)
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+    """
+    url = "https://test.api.amadeus.com/v1/security/oauth2/token"
+    data = {
+        "grant_type": "client_credentials",
+        "client_id": api_key,
+        "client_secret": api_secret
+    }
+    response = requests.post(url, data=data)
+    return response.json()["access_token"]
+
+# 2 Get flights for day
 def get_flights_for_day(access_token, origin, destination, departure_date, max_results=5):
     '''
     Query the Amadeus API for available flights on a given date and return the results 
