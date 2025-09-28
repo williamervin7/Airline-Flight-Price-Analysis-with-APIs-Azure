@@ -64,9 +64,25 @@ def get_flights_for_day(access_token, origin, destination, departure_date, max_r
         "nonStop": "false",
         "max": max_results
     }
+    try:
+        response = requests.get(url, headers=headers, params=params)
+        response.raise_for_status() # raises HTTPError for 4xx/5xx
+        flights = response.json()
+    except request.exceptions.RequestExceptions as e:
+        print("f ❌ Request failed: {e}")
+        return pd.DataFrame()
+    except ValueError:
+        print("❌ Failed to decode JSON response")
+        return pd.DataFrame()
 
-    response = requests.get(url, headers=headers, params=params)
-    flights = response.json()
+    # Debug info
+    if "errors" in flights:
+      print("⚠️ API returned errors:")
+      print(json.dumps(flights['errors'], index=1))
+      return pd.DataFrame()
+    if not flignts.get('data'):
+      print("⚠️ No flight data returned for this query")
+      return pd.DataFrame()
 
     rows = []
     for offer in flights.get("data", []):
