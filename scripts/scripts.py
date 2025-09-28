@@ -153,3 +153,69 @@ def get_flights_over_range(access_token, origin, destination, start_date, end_da
         return pd.concat(all_flights, ignore_index=True)
     else:
         return pd.DataFrame()
+
+import asyncio
+import aiohttp
+import pandas as pd
+from datetime import datetime, timedelta
+import time
+
+async def fetch_flights(session, access_token, origin, destination, date, max_results=5):
+    url = "https://test.api.amadeus.com/v2/shopping/flight-offers"
+    headers = {"Authorization": f"Bearer {access_token}"}
+    params = {
+        "originLocationCode": origin,
+        "destinationLocationCode": destination,
+        "departureDate": date,
+        "adults": 1,
+        "nonStop": "false",
+        "max": max_results
+    }
+    
+    try:
+        async with session.get(url, headers=headers, params=params) as resp:
+            data = await resp.json()
+            if "errors" in data:
+                print(f"⚠️ API error for {date}: {data['errors']}")
+                return pd.DataFrame()
+            rows = []
+            for offer in data.get("data", []):
+                price = offer["price"]["total"]
+                for itinerary in offer["itineraries"]:
+                    duration = itinerary["duration"]
+                    for segment in itinerary["segments"]:
+                        rows.append({
+                            "Airline": segment["carrierCode"],
+                            "Flight": segment["number"],
+                            "From": segment["departure"]["iataCode"],
+                            "Departure": segment["departure"]["at"],
+                            "To": segment["arrival"]["iataCode"],
+                            "Arrival": segment["arrival"]["at"],
+                            "Duration": duration,
+                            "Price": price,
+                            "DepartureDate": date,
+                            "SearchDate": datetime.now().strftime("%Y-%m-%d")
+                        })
+            return pd.DataFrame(rows)
+    except Exception as e:
+        print(f"❌ Request failed for {date}: {e}")
+        return pd.DataFrame()
+
+async def get_flights_over_range_async(access_token, origin, destination, start_date, end_date, max_results=5, delay=1):
+    start = datetime.strptime(start_date, "%Y-%m-%d")
+    end = datetime.strptime(end_date, "%Y-%m-%d")
+    dates = [(start + timedelta(days=i)).strftime("%Y-%m-%d") for i in range((end - start).days + 1)]
+    
+    all_flights = []
+    
+    async with aiohttp.ClientSession() as session:
+        for date in dates:
+            df = await fetch_flights(session, access_token, origin, destination, date, max_results)
+            if not df.empty:
+                all_flights.append(df)
+            await asyncio.sleep(delay)  # respect rate limit
+    
+    if all_flights:
+        return pd.concat(all_flights, ignore_index=True)
+    else:
+        return pd.DataFrame()
