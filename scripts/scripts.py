@@ -68,7 +68,7 @@ def get_flights_for_day(access_token, origin, destination, departure_date, max_r
         response = requests.get(url, headers=headers, params=params)
         response.raise_for_status() # raises HTTPError for 4xx/5xx
         flights = response.json()
-    except request.exceptions.RequestExceptions as e:
+    except requests.exceptions.RequestExceptions as e:
         print("f ❌ Request failed: {e}")
         return pd.DataFrame()
     except ValueError:
@@ -103,3 +103,53 @@ def get_flights_for_day(access_token, origin, destination, departure_date, max_r
                 })
     return pd.DataFrame(rows)
 
+# 3 Get flights over range
+from datetime import datetime, timedelta
+import time
+
+def get_flights_over_range(access_token, origin, destination, start_date, end_date, max_results=5):
+    """
+    Fetch flight offers for every day in a given date range.
+
+    Args:
+        access_token (str): Short-lived token from Amadeus for API calls.
+        origin (str): IATA code of the departure airport.
+        destination (str): IATA code of the arrival airport.
+        start_date (str): Start of the date range in YYYY-MM-DD format.
+        end_date (str): End of the date range in YYYY-MM-DD format.
+        max_results (int, optional): Max results per day. Defaults to 5.
+
+    Returns:
+        pandas.DataFrame: Combined DataFrame of all flight offers across the date range.
+    """
+    # Convert input strings to datetime objects
+    start = datetime.strptime(start_date, "%Y-%m-%d")
+    end = datetime.strptime(end_date, "%Y-%m-%d")
+
+    all_flights = []
+
+    current_date = start
+    while current_date <= end:
+        # Print current date being fetched
+        print(f"Fetching: {current_date.strftime('%Y-%m-%d')}")
+        # Call your existing function
+        flights_df = get_flights_for_day(
+            access_token,
+            origin,
+            destination,
+            current_date.strftime("%Y-%m-%d"),
+            max_results=max_results
+        )
+
+        if not flights_df.empty:
+            all_flights.append(flights_df)
+
+        # Move to the next day
+        current_date += timedelta(days=1)
+        # pause 1 second between API calls
+        time.sleep(1) 
+
+    if all_flights:
+        return pd.concat(all_flights, ignore_index=True)
+    else:
+        return pd.DataFrame()
