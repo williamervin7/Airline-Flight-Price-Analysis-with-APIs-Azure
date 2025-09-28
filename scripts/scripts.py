@@ -33,7 +33,7 @@ def get_access_token(api_key, api_secret):
     return response.json()["access_token"]
 
 # 2 Get flights for day
-def get_flights_for_day(access_token, origin, destination, departure_date, max_results=5):
+def get_flights_for_day(access_token, origin, destination, departure_date, max_results=40):
     '''
     Query the Amadeus API for available flights on a given date and return the results 
     as a DataFrame.
@@ -43,7 +43,7 @@ def get_flights_for_day(access_token, origin, destination, departure_date, max_r
         origin (str): IATA code of the departure airport (e.g., "IAH").
         destination (str): IATA code of the arrival airport (e.g., "JFK").
         departure_date (str): Date of departure in YYYY-MM-DD format.
-        max_results (int, optional): Maximum number of flight offers to return. Defaults to 5.
+        max_results (int, optional): Maximum number of flight offers to return. Defaults to 40.
 
      Returns:
         pandas.DataFrame: A DataFrame where each row represents a flight segment, 
@@ -84,6 +84,7 @@ def get_flights_for_day(access_token, origin, destination, departure_date, max_r
       print("⚠️ No flight data returned for this query")
       return pd.DataFrame()
 
+    search_date = datetime.now().strftime('%Y-%m-%d') # Today’s date when I pulled the data
     rows = []
     for offer in flights.get("data", []):
         price = offer["price"]["total"]
@@ -99,7 +100,8 @@ def get_flights_for_day(access_token, origin, destination, departure_date, max_r
                     "Arrival": segment["arrival"]["at"],
                     "Duration": duration,
                     "Price": price,
-                    "SearchDate": departure_date
+                    "DepartureDate": departure_date,
+                    "SearchDate" : search_date
                 })
     return pd.DataFrame(rows)
 
