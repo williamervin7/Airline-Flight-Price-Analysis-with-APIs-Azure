@@ -80,7 +80,7 @@ def get_flights_for_day(access_token, origin, destination, departure_date, max_r
       print("⚠️ API returned errors:")
       print(json.dumps(flights['errors'], index=1))
       return pd.DataFrame()
-    if not flignts.get('data'):
+    if not flights.get('data'):
       print("⚠️ No flight data returned for this query")
       return pd.DataFrame()
 
