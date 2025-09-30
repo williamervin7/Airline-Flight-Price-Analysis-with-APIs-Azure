@@ -92,6 +92,7 @@ def get_flights_for_day(access_token, origin, destination, departure_date, max_r
             duration = itinerary["duration"]
             for segment in itinerary["segments"]:
                 rows.append({
+                    "OfferID": offer["id"],
                     "Airline": segment["carrierCode"],
                     "Flight": segment["number"],
                     "From": segment["departure"]["iataCode"],
