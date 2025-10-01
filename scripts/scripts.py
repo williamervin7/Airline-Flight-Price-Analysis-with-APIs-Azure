@@ -33,7 +33,7 @@ def get_access_token(api_key, api_secret):
     return response.json()["access_token"]
 
 # 2 Get flights for day
-def get_flights_for_day(access_token, origin, destination, departure_date, max_results=40):
+def get_flights_for_day(access_token, origin, destination, departure_date, max_results=5):
     '''
     Query the Amadeus API for available flights on a given date and return the results 
     as a DataFrame.
@@ -93,19 +93,6 @@ def get_flights_for_day(access_token, origin, destination, departure_date, max_r
         for itinerary in offer["itineraries"]:
             duration = itinerary["duration"]
             for segment in itinerary["segments"]:
-                segment_id = segment["id"]
-                # Default if we don’t find a match
-                cabin = None  
-
-                # Look through travelerPricings -> fareDetailsBySegment
-                for traveler in traveler_pricings:
-                    for fare_detail in traveler.get("fareDetailsBySegment", []):
-                        if isinstance(fare_detail, dict):  # only handle dicts
-                            if fare_detail.get("segmentId") == segment_id:
-                                cabin = fare_detail.get("cabin")
-                                break
-                    if cabin:  # stop once found
-                        break
                 rows.append({
                     "OfferID": offer["id"],
                     "Airline": segment["carrierCode"],
@@ -116,7 +103,6 @@ def get_flights_for_day(access_token, origin, destination, departure_date, max_r
                     "Arrival": segment["arrival"]["at"],
                     "Duration": duration,
                     "Price": price,
-                    'Cabin': cabin,
                     "DepartureDate": departure_date,
                     "SearchDate" : search_date
                 })
@@ -126,7 +112,7 @@ def get_flights_for_day(access_token, origin, destination, departure_date, max_r
 from datetime import datetime, timedelta
 import time
 
-def get_flights_over_range(access_token, origin, destination, start_date, end_date, max_results=40):
+def get_flights_over_range(access_token, origin, destination, start_date, end_date, max_results=5):
     """
     Fetch flight offers for every day in a given date range.
 
