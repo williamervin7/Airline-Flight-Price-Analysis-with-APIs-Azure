@@ -100,9 +100,10 @@ def get_flights_for_day(access_token, origin, destination, departure_date, max_r
                 # Look through travelerPricings -> fareDetailsBySegment
                 for traveler in traveler_pricings:
                     for fare_detail in traveler.get("fareDetailsBySegment", []):
-                        if fare_detail.get("segmentId") == segment_id:
-                            cabin = fare_detail.get("cabin")
-                            break
+                        if isinstance(fare_detail, dict):  # only handle dicts
+                            if fare_detail.get("segmentId") == segment_id:
+                                cabin = fare_detail.get("cabin")
+                                break
                     if cabin:  # stop once found
                         break
                 rows.append({
