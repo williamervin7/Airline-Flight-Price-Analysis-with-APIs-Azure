@@ -88,8 +88,6 @@ def get_flights_for_day(access_token, origin, destination, departure_date, max_r
     rows = []
     for offer in flights.get("data", []):
         price = offer["price"]["total"]
-        # Each travelerPricing has fareDetailsBySegment info
-        traveler_pricings = offer.get("travelerPricings", [])
         for itinerary in offer["itineraries"]:
             duration = itinerary["duration"]
             for segment in itinerary["segments"]:
