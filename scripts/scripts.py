@@ -110,7 +110,7 @@ def get_flights_for_day(access_token, origin, destination, departure_date, max_r
 from datetime import datetime, timedelta
 import time
 
-def get_flights_over_range(access_token, origin, destination, start_date, end_date, max_results=5):
+def get_flights_over_range(access_token, origin, destination, start_date, end_date, max_results=40):
     """
     Fetch flight offers for every day in a given date range.
 
