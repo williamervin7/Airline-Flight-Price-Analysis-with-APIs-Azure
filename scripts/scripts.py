@@ -101,6 +101,7 @@ def get_flights_for_day(access_token, origin, destination, departure_date, max_r
                     "Arrival": segment["arrival"]["at"],
                     "Duration": duration,
                     "Price": price,
+                    'Cabin': segment['cabin'],
                     "DepartureDate": departure_date,
                     "SearchDate" : search_date
                 })
