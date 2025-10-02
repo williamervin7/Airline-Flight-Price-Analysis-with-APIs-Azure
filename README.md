@@ -1,7 +1,7 @@
 # ✈️ Airline Flight Price Analysis with APIs & Azure
 
 ## 📌 Project Overview
-This project explores airline flight pricing using live data from APIs (e.g., Skyscanner, Amadeus).  
+This project explores airline flight pricing using live data from Amadeus APIs.  
 The goal is to demonstrate how to:
 - Pull and process dynamic API data.
 - Answer business-relevant questions about flight prices and booking behavior.
@@ -19,7 +19,9 @@ This project highlights skills in **API integration, exploratory data analysis, 
 │ └── 3_business_questions.ipynb
 │
 ├── data/ # Local cache of pulled data (excluded via .gitignore)
+|└── raw
 ├── scripts/ # Python scripts for API calls, cleaning
+|└── scripts.py
 ├── figures/ # Visualizations for README and reports
 ├── README.md # Project outline
 └── requirements.txt # Dependencies 
