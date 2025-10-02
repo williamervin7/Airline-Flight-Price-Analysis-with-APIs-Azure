@@ -25,7 +25,7 @@ jobs:
         env:
           AMADEUS_KEY:: ${{ secrets.AMADEUS_KEY }}
           AMADEUS_SECRET: ${{ secrets.AMADEUS_SECRET }}
-        run: python scripts/data_collection.py
+        run: python notebooks/data_collection.py
 
       - name: Commit and push results
         run: |
