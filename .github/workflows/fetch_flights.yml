@@ -33,4 +33,6 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git add data/raw/*.csv
           git commit -m "Automated daily flight data update [skip ci]" || echo "No changes"
-          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/williamervin7/Airline-Flight-Price-Analysis-with-APIs-Azure.git
+          # override remote to use GH_PAT explicitly
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/williamervin7/Airline-Flight-Price-Analysis-with-APIs-Azure.git
+          git push origin main
