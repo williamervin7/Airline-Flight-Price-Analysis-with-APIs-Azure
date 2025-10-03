@@ -32,7 +32,11 @@ jobs:
           AMADEUS_KEY: ${{ secrets.AMADEUS_KEY }}
           AMADEUS_SECRET: ${{ secrets.AMADEUS_SECRET }}
         run: python scripts/data_collection.py
-
+      
+      - name: Configure Git User
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       # 5a. Stage and commit the CSV
       - name: Stage and commit CSV
         run: |
