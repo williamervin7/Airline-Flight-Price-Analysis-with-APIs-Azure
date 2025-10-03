@@ -1,10 +1,10 @@
 # ✈️ Airline Flight Price Analysis with APIs & Azure
 
 ## 📌 Project Overview
-This project explores airline flight pricing using live data from Amadeus APIs.  
-The goal is to demonstrate how to:
-- Pull and process dynamic API data.
-- Answer business-relevant questions about flight prices and booking behavior.
+This project analyzes airline flight pricing using live data from the Amadeus API.
+The objectives are to:
+- Pull and process dynamic flight data.
+- Explore business-relevant questions around pricing and booking behavior.
 - Build scalable pipelines with Azure for automation and dashboards.
 
 This project highlights skills in **API integration, exploratory data analysis, statistical reasoning, dashboarding, and cloud deployment**.
@@ -19,7 +19,7 @@ This project highlights skills in **API integration, exploratory data analysis, 
 │ └── 3_business_questions.ipynb
 │
 ├── data/ # Local cache of pulled data (excluded via .gitignore)
-|└── raw
+|└── raw/ # Daily raw data from AIP calls
 ├── scripts/ # Python scripts for API calls, cleaning
 |└── scripts.py
 ├── figures/ # Visualizations for README and reports
@@ -31,11 +31,11 @@ This project highlights skills in **API integration, exploratory data analysis, 
 ## 🚀 Roadmap
 
 ### Phase 1 (Local: Python + Colab)
-- Connect to Skyscanner / Amadeus API.
-- Collect flight pricing data (routes, times, booking windows).
-- Explore key trends: cheapest times to fly, seasonal effects, route comparisons.
+- Connect to Amadeus API.
+- Collect flight pricing data for IHA -> LAX from 11/15/2025-12/31/2025 using github workflow
+- Explore key trends: cheapest times to fly, seasonal effects.
 - Answer structured business questions:
-  - *What’s the average price swing for Houston → NYC by booking month?*
+  - *What’s the average price swing for Houston → lAX by booking day?*
   - *Which routes have the highest seasonal variation?*
   - *What is the optimal booking window to minimize costs?*
   - *How do weekend vs. weekday departures affect average price?*
@@ -54,7 +54,7 @@ This project highlights skills in **API integration, exploratory data analysis, 
 
 ## 📊 Tools & Tech Stack
 - **Python**: `requests`, `pandas`, `numpy`, `matplotlib`, `seaborn`, `plotly`
-- **APIs**: Skyscanner API, Amadeus API (depending on access)
+- **APIs**: Amadeus API 
 - **Dashboards**: Streamlit / Plotly Dash / Power BI
 - **Cloud**: Azure Blob Storage, Azure Data Factory, Azure ML, Azure Power BI
 
