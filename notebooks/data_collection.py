@@ -12,7 +12,7 @@ from datetime import datetime
 import pandas as pd
 
 # Import your helper functions from scripts/scripts.py
-from scripts.scripts import get_flights_for_day, get_access_token, get_flights_over_range
+from scripts import get_flights_for_day, get_access_token, get_flights_over_range
 
 
 def main():
