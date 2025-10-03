@@ -10,33 +10,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout repo
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      # 2. Set up Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
+      # 3. Install dependencies
       - name: Install dependencies
         run: pip install requests pandas
 
+      # 4. Run the data collection script
       - name: Run script
         env:
           AMADEUS_KEY: ${{ secrets.AMADEUS_KEY }}
           AMADEUS_SECRET: ${{ secrets.AMADEUS_SECRET }}
         run: python scripts/data_collection.py
 
+      # 5. Commit and push the CSV using GitHub Action
       - name: Commit and push results
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add data/raw/*.csv
-          git commit -m "Automated daily flight data update [skip ci]" || echo "No changes"
-          # Remove old remote to avoid cached credentials
-          git remote remove origin
-          # Add remote with your GH_PAT
-          git remote add origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/williamervin7/Airline-Flight-Price-Analysis-with-APIs-Azure.git
-          # Push changes
-          git push -u origin main
-
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          branch: main
+          commit-message: Automated daily flight data update [skip ci]
+          github-token: ${{ secrets.GH_PAT }}
