@@ -31,10 +31,17 @@ jobs:
           AMADEUS_SECRET: ${{ secrets.AMADEUS_SECRET }}
         run: python scripts/data_collection.py
 
-      # 5. Commit and push the CSV using GitHub Action
-      - name: Commit and push results
+      # 5a. Stage and commit the CSV
+      - name: Stage and commit CSV
+        run: |
+          git add data/raw/*.csv
+          git commit -m "Automated daily flight data update [skip ci]" || echo "No changes"
+
+      # 5b. Push changes using GitHub Action
+      - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
           branch: main
-          commit-message: Automated daily flight data update [skip ci]
-          github-token: ${{ secrets.GH_PAT }}
+          force: true
+          github_token: ${{ secrets.GH_PAT }}
+
