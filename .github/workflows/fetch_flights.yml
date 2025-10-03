@@ -37,13 +37,17 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      # 5a. Stage and commit the CSV
+      # 5a. Set current date as an environment variable
+      - name: Set Date
+        id: date
+        run: echo "COMMIT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      # 5b. Stage and commit the CSV
       - name: Stage and commit CSV
         run: |
           git add data/raw/*.csv
-          git commit -m "Automated daily flight data update [skip ci]" || echo "No changes"
+          git commit -m "Automated flight data update for ${{ env.COMMIT_DATE }} [skip ci]" || echo "No changes to commit"
 
-      # 5b. Push changes using GitHub Action
+      # 5c. Push changes using GitHub Action
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
