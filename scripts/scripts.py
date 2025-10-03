@@ -24,8 +24,6 @@ def get_access_token(api_key, api_secret):
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
     """
     url = "https://test.api.amadeus.com/v1/security/oauth2/token"
-    api_key = os.getenv("AMADEUS_KEY")
-    api_secret = os.getenv("AMADEUS_SECRET")
     data = {
         "grant_type": "client_credentials",
         "client_id": api_key,
