@@ -15,8 +15,9 @@ This project highlights skills in **API integration, exploratory data analysis, 
 |
 ├── notebooks/ # Jupyter/Colab notebooks
 │ └── 1_data_collection.ipynb
-│ └── 2_exploratory_analysis.ipynb
-│ └── 3_business_questions.ipynb
+| └── 2_data_cleaning.ipynb
+│ └── 3_exploratory_analysis.ipynb
+│ └── 4_business_questions.ipynb
 │
 ├── data/ # Local cache of pulled data (excluded via .gitignore)
 |└── raw/ # Daily raw data from AIP calls
