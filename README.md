@@ -1,13 +1,13 @@
 # ✈️ Airline Flight Price Analysis with APIs & Azure
 
 ## 📌 Project Overview
-This project analyzes airline flight pricing using live data from the Amadeus API.
+This project forecasts and analyzes airline flight prices using real-time data from the Amadeus API.
 The objectives are to:
-- Pull and process dynamic flight data.
+- Collect and process dynamic flight offers across routes and dates.
 - Explore business-relevant questions around pricing and booking behavior.
-- Build scalable pipelines with Azure for automation and dashboards.
+- Develop automated data pipelines and dashboards using Azure.
 
-This project highlights skills in **API integration, exploratory data analysis, statistical reasoning, dashboarding, and cloud deployment**.
+This project highlights skills in **API integration, data engineering, statistical modeling, forecasting, and cloud deployment.**.
 ---
 ## 🗂️ Project Structure
 
