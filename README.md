@@ -1,98 +1,103 @@
-# ✈️ Airline Flight Price Analysis with APIs & Azure
+# ✈️ Airline Flight Price Forecasting and Deployment on Azure
 
 ## 📌 Project Overview
 
-This project forecasts and analyzes airline flight prices using real-time data from the Amadeus API.
-The objectives were to:
+This project builds a robust machine learning system to forecast and analyze airline flight prices, transforming raw API data into **actionable purchasing recommendations**.
 
-* Collect and process dynamic flight offers across IAH to LAX and dates. ✅ Completed
-* Explore business-relevant questions around pricing and booking behavior. ✅ Completed
-* Develop automated data pipelines and dashboards using Azure.
+The objectives achieved are:
 
-This project highlights skills in **API integration, data engineering, statistical analysis, EDA, and cloud deployment**.
+  * Collect and process dynamic flight offers across IAH to LAX/ONT. ✅ Completed
+  * Develop a **Time-Series Regression Model** to forecast fair market price. ✅ New\!
+  * Implement a **Deal Detection Engine** to generate buy/wait recommendations. ✅ New\!
+  * Develop automated data pipelines and dashboards using Azure. ⏳ In Progress
 
----
+This project highlights end-to-end skills in **API integration, data engineering, time-series modeling, MLOps preparation, and cloud deployment**.
+
+-----
 
 ## 🗂️ Project Structure
+
+The project structure is updated to reflect the consolidation of all modeling logic into a single deployment-ready Python script.
 
 ```text
 airline-flight-prices/
 |
 ├── notebooks/
-│   └── 1_data_collection.ipynb ✅ Completed
-│   └── 2_data_cleaning.ipynb ✅ Completed
-│   └── 3_EDA.ipynb ✅ Completed
-│   └── 4_Flight_Price_Forecasting.ipynb
+│   └── 1_data_collection.ipynb ✅ Completed
+│   └── 2_data_cleaning.ipynb ✅ Completed
+│   └── 3_EDA.ipynb ✅ Completed
+│   └── 4_Flight_Price_Forecasting.ipynb 🚀 Logic Migrated to scripts/
 │
 ├── data/
-│   └── raw/
-│   └── clean/
+│   └── raw/
+│   └── clean/
 ├── scripts/
-│   └── scripts.py
-|   └── models.py
+│   └── scripts.py 
+│   └── models.py 🆕 **Contains entire ML pipeline (Steps 1-8)**
+├── models/
+│   └── flight_price_model_v3.pkl 🆕 **Trained & Serialized Model**
 ├── figures/
 ├── README.md
 └── requirements.txt
 ```
 
----
+-----
 
 ## ✅ Completed Work
 
-### Data Collection
+### Data Collection & Cleaning
 
-* Connected to Amadeus API and pulled flight offers for IAH → LAX (11/15/2025–12/31/2025).
-* Stored raw CSV data in a reproducible format.
+<img width="3999" height="2599" alt="image" src="https://github.com/user-attachments/assets/f32a1f5e-2b9d-4209-8ab9-5662d2868bb3" />
 
-### Data Cleaning
 
-* Standardized columns, handled missing values, and converted date/time fields.
-* Created derived features like `days_until_departure`, `is_weekend`, and day/week indicators.
+  * Connected to Amadeus API and pulled flight offers for IAH → LAX/ONT.
+  * Standardized data, handled missing values, and consolidated segments into unique journey rows.
 
 ### Exploratory Data Analysis (EDA)
 
-* Examined dataset shape, column types, missing values, and basic statistics.
-* Analyzed price distributions, trends over time, and airline-specific patterns.
-* Visualized relationships between price, booking timing, day of week, and flight characteristics.
-* Extracted actionable insights (best day to search, fly, and optimal booking window).
+  * Analyzed price distributions, trends over time, and airline-specific patterns.
+  * Extracted actionable insights (best day to search, fly, and optimal booking window).
 
----
+### Machine Learning Forecasting (Phase 2 Complete) 🧠
+
+| Component | Detail | Impact |
+| :--- | :--- | :--- |
+| **Feature Engineering** | Created time-series features: **Price Lag, Rolling Mean, and Volatility ($\text{price\_rolling\_std\_3}$)**. | Critical for predicting dynamic price changes and momentum. |
+| **Model** | **LightGBM Regressor** trained using **Time Series Cross-Validation (TSCV)**. | Ensures the model generalizes robustly to future, unseen data. |
+| **Performance** | Model evaluated using MAE, RMSE, and **MAPE** (Mean Absolute Percentage Error). | MAPE provides a clear, interpretable measure of forecast accuracy. |
+| **Deal Detection** | Implemented logic to categorize offers as **'EXCELLENT'**, **'GOOD'**, **'FAIR'**, or **'OVERPRICED'**. | Generates the final, actionable recommendation (**"🔥 BUY NOW"**). |
+| **Persistence** | The trained model is serialized (`flight_price_model_v3.pkl`) and ready for deployment. | Allows for fast, efficient loading for inference. |
+
+-----
 
 ## 🚀 Roadmap (Next Steps)
 
-### Phase 2 – Local Modeling & Price Alerts
+### Phase 3 – Azure Integration & Deployment ☁️
 
-* Develop and test predictive models locally using the cleaned dataset.
-* Explore regression and time-series approaches to forecast flight prices.
-* Implement a basic price alert system based on model predictions or thresholds.
-* Validate models and alerts to ensure reliability before scaling to Azure.
-* Prepare scripts and workflows for seamless migration to cloud deployment.
+This phase focuses entirely on transforming the local pipeline into a scalable, automated cloud solution using Azure's MLOps capabilities.
 
-### Phase 3 – Azure Integration
+[Image of machine learning deployment pipeline]
 
-* Deploy automated pipeline: **API → Azure Blob Storage → Azure Data Factory → Azure ML / Power BI**.
-* Daily refresh of flight data.
-* (Optional) Real-time price alerts.
+  * **Model Registration:** Register the `flight_price_model_v3.pkl` model within **Azure Machine Learning Service**.
+  * **Data Pipeline Automation:** Use **Azure Data Factory** (ADF) to orchestrate daily data collection from the API and preprocessing into **Azure Blob Storage**.
+  * **Real-time Inference API:** Deploy the model via **Azure Container Instances (ACI)** or **Azure Kubernetes Service (AKS)** to create a low-latency scoring API.
+  * **Monitoring & Visualization:** Integrate the predicted data and deal categories into **Power BI** for ongoing performance monitoring and business user dashboards.
 
----
+-----
 
 ## 📊 Tools & Tech Stack
 
-* **Python**: `requests`, `pandas`, `numpy`, `matplotlib`, `seaborn`, `plotly`
-* **APIs**: Amadeus API
-* **Cloud**: Azure Blob Storage, Azure Data Factory, Azure ML, Azure Power BI
+  * **Modeling**: `Python`, `pandas`, `numpy`, `scikit-learn`, **`lightgbm`**
+  * **APIs**: Amadeus API
+  * **Cloud (Focus)**: **Azure Blob Storage, Azure Data Factory, Azure ML, Azure Functions/ACI/AKS, Azure Power BI**
 
----
+-----
 
 ## 🔑 Key Value
 
-This project demonstrates:
+This project demonstrates proficiency across the entire data science lifecycle:
 
-* API data wrangling and automation
-* Business-focused analysis with actionable insights
-* Cloud pipeline deployment with Azure
-
-
----
-
-If you want, I can also rewrite your **Project Overview** section in 3–4 punchy sentences that reads more like a portfolio description rather than a roadmap — which often looks cleaner on GitHub. Do you want me to do that?
+  * End-to-end data engineering and API data wrangling.
+  * Advanced **time-series feature engineering** and robust **model validation (TSCV)**.
+  * Translating model output into **actionable business intelligence** (Deal Alerts).
+  * Preparation of a production-ready model artifact for **Cloud Deployment (MLOps)**.
