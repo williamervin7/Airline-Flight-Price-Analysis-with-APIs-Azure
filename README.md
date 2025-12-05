@@ -62,7 +62,7 @@ airline-flight-prices/
 
 | Component | Detail | Impact |
 | :--- | :--- | :--- |
-| **Feature Engineering** | Created time-series features: **Price Lag, Rolling Mean, and Volatility ($\text{price\_rolling\_std\_3}$)**. | Critical for predicting dynamic price changes and momentum. |
+| **Feature Engineering** | Created time-series features: **Price Lag, Rolling Mean, and Volatility**. | Critical for predicting dynamic price changes and momentum. |
 | **Model** | **LightGBM Regressor** trained using **Time Series Cross-Validation (TSCV)**. | Ensures the model generalizes robustly to future, unseen data. |
 | **Performance** | Model evaluated using MAE, RMSE, and **MAPE** (Mean Absolute Percentage Error). | MAPE provides a clear, interpretable measure of forecast accuracy. |
 | **Deal Detection** | Implemented logic to categorize offers as **'EXCELLENT'**, **'GOOD'**, **'FAIR'**, or **'OVERPRICED'**. | Generates the final, actionable recommendation (**"🔥 BUY NOW"**). |
