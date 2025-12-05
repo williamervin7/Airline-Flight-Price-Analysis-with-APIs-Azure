@@ -33,9 +33,9 @@ airline-flight-prices/
 │   └── clean/
 ├── scripts/
 │   └── scripts.py 
-│   └── models.py 🆕 **Contains entire ML pipeline (Steps 1-8)**
+│   └── models.py 🆕 Contains entire ML pipeline (Steps 1-8) 
 ├── models/
-│   └── flight_price_model_v3.pkl 🆕 **Trained & Serialized Model**
+│   └── flight_price_model_v3.pkl 🆕 Trained & Serialized Model
 ├── figures/
 ├── README.md
 └── requirements.txt
